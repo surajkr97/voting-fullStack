@@ -1,2 +1,1 @@
 # voting-fullStack
-# voting-fullStack
