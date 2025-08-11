@@ -3,6 +3,18 @@ const router = express.Router();
 const User = require("../models/user");
 const { jwtAuthMiddleware, generateToken } = require("./../jwt");
 
+
+// Get all the users
+router.get("/", async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 //POST Route, Create a new user
 router.post("/signup", async (req, res) => {
   try {

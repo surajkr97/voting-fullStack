@@ -7,6 +7,9 @@ const SignUp = () => {
     name: "",
     email: "",
     password: "",
+    mobile: "",
+    address: "",
+    aadharCardNumber: "",
   };
 
   const [data, setdata] = useState(userDetail);
@@ -25,7 +28,7 @@ const SignUp = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (data.name == "" || data.email == "" || data.password == "") {
+    if (data.name == "" || data.password == "" || data.address == "" || data.aadharCardNumber == "") {
       alert("Please Enter Your Detail");
     } else {
       const getData = JSON.parse(localStorage.getItem("user")) || [];
@@ -72,7 +75,7 @@ const SignUp = () => {
       <div className="flex-grow flex justify-center items-center p-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 bg-white shadow-lg rounded-2xl overflow-hidden max-w-7xl w-full">
           {/* Image container for the first column */}
-          <div className="hidden md:flex justify-center items-center p-6 bg-sky-100">
+          <div className="hidden md:flex justify-center items-center p-6 bg-orange-100">
             <img src={Unknown} alt="SignUp" className="max-h-80" />
           </div>
 
@@ -102,7 +105,6 @@ const SignUp = () => {
                   name="email"
                   placeholder="Email"
                   className={inputField}
-                  required
                 />
                 <input
                   onChange={handleInput}
@@ -122,7 +124,6 @@ const SignUp = () => {
                   name="mobile"
                   placeholder="Mobile Number"
                   className={inputField}
-                  required
                 />
                 <input
                   onChange={handleInput}
