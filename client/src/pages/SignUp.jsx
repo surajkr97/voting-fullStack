@@ -40,7 +40,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="md:h-screen flex flex-col ">
+    <div className="md:h-screen flex flex-col bg-gray-100">
       <header className="shadow sticky z-50 top-0 flex-none">
         <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5">
           <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
@@ -69,75 +69,97 @@ const SignUp = () => {
         </nav>
       </header>
 
-      <div className="flex flex-1 col-g justify-center min-h-110 items-center">
-        <div className="max-w-6xl mx-auto p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2">
-            <div className="h-70 w-70 mt-3">
-              <img src={Unknown} alt="SignUp Img" />
-            </div>
+      <div className="flex-grow flex justify-center items-center p-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 bg-white shadow-lg rounded-2xl overflow-hidden max-w-7xl w-full">
+          {/* Image container for the first column */}
+          <div className="hidden md:flex justify-center items-center p-6 bg-sky-100">
+            <img src={Unknown} alt="SignUp" className="max-h-80" />
+          </div>
 
-            <form
-              onSubmit={handleSubmit}
-              className="p-6 flex flex-col justify-center"
-            >
-              <div className="flex flex-col">
-                <label htmlFor="name" className="hidden">
-                  Full Name
-                </label>
+          {/* This div will handle the two columns of input fields */}
+          <form
+            onSubmit={handleSubmit}
+            className="p-8 col-span-2 flex flex-col justify-center"
+          >
+            <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
+              Sign Up
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Input fields for the first column */}
+              <div className="flex flex-col gap-2">
                 <input
                   onChange={handleInput}
                   type="text"
                   name="name"
-                  id="name"
-                  placeholder="Github Username"
-                  className="w-full mt-2 py-3 px-3 rounded-lg bg-white border border-gray-400 text-gray-800 font-semibold focus:border-orange-500 focus:outline-none"
+                  placeholder="Full Name"
+                  className={inputField}
+                  required
                 />
-              </div>
-
-              <div className="flex flex-col mt-2">
-                <label htmlFor="email" className="hidden">
-                  Email
-                </label>
                 <input
                   onChange={handleInput}
                   type="email"
                   name="email"
-                  id="email"
                   placeholder="Email"
-                  className="w-full mt-2 py-3 px-3 rounded-lg bg-white border border-gray-400 text-gray-800 font-semibold focus:border-orange-500 focus:outline-none"
+                  className={inputField}
+                  required
                 />
-              </div>
-
-              <div className="flex flex-col mt-2">
-                <label htmlFor="password" className="hidden">
-                  Number
-                </label>
                 <input
                   onChange={handleInput}
                   type="password"
                   name="password"
-                  id="password"
                   placeholder="Password"
-                  className="w-full mt-2 py-3 px-3 rounded-lg bg-white border border-gray-400 text-gray-800 font-semibold focus:border-orange-500 focus:outline-none"
+                  className={inputField}
+                  required
                 />
               </div>
 
-              <button
-                type="submit"
-                className="w-full bg-orange-700 hover:bg-blue-dark text-white font-bold py-3 px-6 rounded-lg mt-3 hover:bg-orange-600 transition ease-in-out duration-300"
+              {/* Input fields for the second column */}
+              <div className="flex flex-col gap-2">
+                <input
+                  onChange={handleInput}
+                  type="text"
+                  name="mobile"
+                  placeholder="Mobile Number"
+                  className={inputField}
+                  required
+                />
+                <input
+                  onChange={handleInput}
+                  type="text"
+                  name="address"
+                  placeholder="Address"
+                  className={inputField}
+                  required
+                />
+                <input
+                  onChange={handleInput}
+                  type="text"
+                  name="aadharCardNumber"
+                  placeholder="Aadhar Card Number"
+                  className={inputField}
+                  required
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-orange-700 text-white font-bold py-3 px-6 rounded-lg mt-6 hover:bg-orange-600 transition duration-300"
+            >
+              Sign Up
+            </button>
+
+            <p className="mt-4 text-center text-gray-600">
+              Already have an account?{" "}
+              <Link
+                to={"/login"}
+                className="text-blue-600 font-semibold hover:underline"
               >
-                Sign Up
-              </button>
-              <p className="mt-2 text-gray-600">
-                Already have an account?
-                <Link to={"/login"}>
-                  <span className="text-blue-700 underline cursor-pointer">
-                    Login
-                  </span>
-                </Link>
-              </p>
-            </form>
-          </div>
+                Login
+              </Link>
+            </p>
+          </form>
         </div>
       </div>
 
@@ -234,5 +256,9 @@ const SignUp = () => {
     </div>
   );
 };
+
+// A constant to keep styling consistent and clean
+const inputField =
+  "w-full mt-4 py-3 px-4 rounded-lg bg-white border border-gray-300 text-gray-800 font-semibold focus:border-orange-500 focus:ring-2 focus:ring-orange-200 focus:outline-none transition duration-300";
 
 export default SignUp;
