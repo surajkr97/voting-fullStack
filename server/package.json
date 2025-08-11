@@ -1,0 +1,34 @@
+{
+  "name": "voting-app",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/surajkr97/voting-app#readme",
+  "bugs": {
+    "url": "https://github.com/surajkr97/voting-app/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/surajkr97/voting-app.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "mongoose": "^8.16.4",
+    "nodemon": "^3.1.10",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0"
+  }
+}

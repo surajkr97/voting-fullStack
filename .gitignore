@@ -1,0 +1,47 @@
+# Node modules
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env files
+.env
+client/.env
+server/.env
+
+# Build & dist folders
+client/build/
+server/dist/
+dist/
+build/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# IDE / editor settings
+.vscode/
+.idea/
+
+# Coverage reports
+coverage/
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Cache
+.cache/
+.parcel-cache/
+.next/
+out/
+
+# Local database or uploads (optional, if generated locally)
+uploads/
+data/
