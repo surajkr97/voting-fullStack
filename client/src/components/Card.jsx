@@ -27,7 +27,8 @@ const Card = ({ data, type }) => {
       <div className={cardStyles}>
         <h3 className={nameStyles}>{data.name}</h3>
         <p className={detailStyles}>Email: {data.email}</p>
-        <p className={detailStyles}>Mobile: {data.mobile}</p>
+        <p className={detailStyles}>Mobile: {data.number}</p>
+        <p className={detailStyles}>Address: {data.address}</p>
       </div>
     );
   }

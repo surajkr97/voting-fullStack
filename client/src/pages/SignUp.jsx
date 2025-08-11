@@ -7,7 +7,7 @@ const SignUp = () => {
     name: "",
     email: "",
     password: "",
-    mobile: "",
+    number: "",
     address: "",
     aadharCardNumber: "",
   };
@@ -25,20 +25,41 @@ const SignUp = () => {
   };
   // console.log(data);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (data.name == "" || data.password == "" || data.address == "" || data.aadharCardNumber == "") {
+    if (
+      data.name == "" ||
+      data.password == "" ||
+      data.address == "" ||
+      data.aadharCardNumber == ""
+    ) {
       alert("Please Enter Your Detail");
-    } else {
-      const getData = JSON.parse(localStorage.getItem("user")) || [];
-      let arr = [];
-      arr = [...getData];
-      arr.push(data);
+      return;
+    }
 
-      localStorage.setItem("user", JSON.stringify(arr));
-      alert("Sucessfully Signed In");
-      navigate("/login");
+    try {
+      // Connect to the backend API
+      const response = await fetch("http://localhost:3001/api/user/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const responseData = await response.json();
+
+      if (response.ok) {
+        alert("Successfully Signed Up");
+        navigate("/login");
+      } else {
+        // Handle server-side errors (e.g., admin already exists, validation errors)
+        alert(`Error: ${responseData.error}`);
+      }
+    } catch (error) {
+      console.error("Error during signup:", error);
+      alert("An unexpected error occurred. Please try again.");
     }
   };
 
@@ -121,7 +142,7 @@ const SignUp = () => {
                 <input
                   onChange={handleInput}
                   type="text"
-                  name="mobile"
+                  name="number"
                   placeholder="Mobile Number"
                   className={inputField}
                 />
