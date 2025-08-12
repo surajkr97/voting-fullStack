@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import login from "../assets/Images/login.png";
 import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const LogIn = () => {
   const [data, setData] = useState({
@@ -40,8 +41,12 @@ const LogIn = () => {
         const token = responseData.token;
         localStorage.setItem("token", token);
 
+        // Decode the token to get the user's ID
+        const decoded = jwtDecode(token);
+        const userId = decoded.id; // Assuming your payload has an 'id' field
+
         alert("Login Successful!");
-        navigate("/");
+        navigate(`/user/${userId}`);
       } else {
         setMessage(`*Invalid Login Credential*`);
         alert(`Error: ${responseData.error}`);
