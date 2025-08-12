@@ -1,12 +1,13 @@
 import React from "react";
 
-const Card = ({ data, type }) => {
+const Card = ({ data, type, onVote }) => {
   if (!data) {
     return null;
   }
 
   // Common styles for the card
-  const cardStyles = "bg-white shadow rounded-2xl overflow-hidden text-center p-6 border-2 border-gray-200";
+  const cardStyles =
+    "bg-white shadow rounded-2xl overflow-hidden text-center p-6 border-2 border-gray-200";
   const nameStyles = "mt-4 text-lg font-semibold text-gray-800";
   const detailStyles = "text-gray-500 text-sm";
   const labelStyles = "inline-block mt-3 px-3 py-1 text-sm rounded-full";
@@ -19,7 +20,13 @@ const Card = ({ data, type }) => {
         <p className={detailStyles}>{data.party}</p>
         <span className={`${labelStyles} bg-green-100 text-green-700`}>
           Votes: {data.voteCount}
-        </span>
+        </span> <br />
+        <button
+          onClick={() => onVote(data._id)} // Pass the candidate's ID to the onVote function
+          className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+        >
+          Vote
+        </button>
       </div>
     );
   } else if (type === "user") {

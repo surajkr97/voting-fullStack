@@ -17,8 +17,8 @@ const checkAdminRole = async (userId) => {
   }
 };
 
-//Get all the candidates
-router.get("/", async (req, res) => {
+// Get all the candidates
+router.get("/", jwtAuthMiddleware, async (req, res) => {
   try {
     const candidates = await Candidate.find();
     res.status(200).json(candidates);
@@ -139,9 +139,19 @@ router.post("/vote/:candidateID", jwtAuthMiddleware, async (req, res) => {
     }
 
     //Update the candidate document to record the vote
-    candidate.votes.push({ user: userId });
-    candidate.voteCount++;
-    await candidate.save();
+    // candidate.votes.push({ user: userId });
+    // candidate.voteCount++;
+    // await candidate.save();
+
+    // Use findByIdAndUpdate for a reliable and atomic update
+    const updatedCandidate = await Candidate.findByIdAndUpdate(
+      candidateID,
+      {
+        $push: { votes: { user: userId } },
+        $inc: { voteCount: 1 },
+      },
+      { new: true }
+    ); // The { new: true } option returns the updated document
 
     // Update the user document
     user.isVoted = true;
