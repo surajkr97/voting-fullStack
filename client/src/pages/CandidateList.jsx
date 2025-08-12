@@ -1,18 +1,54 @@
 import React, { useState, useEffect } from "react";
-import Card from '../components/Card';
+import Card from "../components/Card";
+import { useNavigate } from 'react-router-dom';
 
 function CandidatesList() {
   const [candidates, setCandidates] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // The address of your backend API endpoint
-    fetch("http://localhost:3001/api/candidate")
-      .then((response) => response.json()) // Get the data and parse it as JSON
-      .then((data) => setCandidates(data)) // Save the data in state
-      .catch((error) => console.error("Error:", error)); // Handle any errors
-  }, []);
+    const fetchCandidates = async () => {
+      const token = localStorage.getItem('token'); // Retrieve the JWT from localStorage
 
-  console.log("Current candidates state:", candidates);
+      if (!token) {
+        // If no token is found, redirect to the login page
+        navigate("/login");
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:3001/api/candidate", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}` // This is the key change!
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch candidates. Please log in again.");
+        }
+
+        const data = await response.json();
+        setCandidates(data.candidates); // Ensure you're setting the correct data property
+      } catch (err) {
+        console.error("Error fetching candidates:", err);
+        setError(err.message);
+        // You might want to clear the token and redirect on an error
+        localStorage.removeItem('token');
+        navigate("/login");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCandidates();
+  }, [navigate]); // Added navigate to the dependency array
+
+  if (loading) return <div>Loading candidates...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div>
@@ -21,7 +57,7 @@ function CandidatesList() {
         {candidates.map((candidate) => (
           <Card key={candidate._id} data={candidate} type="candidate" />
         ))}
-        </div>
+      </div>
     </div>
   );
 }

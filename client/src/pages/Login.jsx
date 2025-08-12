@@ -1,47 +1,54 @@
 import React, { useState } from "react";
-import login from "../../assets/Images/login.png";
+import login from "../assets/Images/login.png";
 import { Link, useNavigate } from "react-router-dom";
 
 const LogIn = () => {
-  const [userEmail, setUserEmail] = useState("");
-  const [userPassword, setUserPassword] = useState("");
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
+
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-
-    if (name == "email") {
-      setUserEmail(value);
-    } else if (name == "password") {
-      setUserPassword(value);
-    }
+    const { name, value } = e.target;
+    setData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("password", userPassword);
-
-    let getDetails = JSON.parse(localStorage.getItem("user"));
-    console.log(getDetails);
-
-    if (!userEmail.trim() || !userPassword.trim()) {
+    if (!data.email.trim() || !data.password.trim()) {
       setMessage("*Please Enter Your Details*");
-    } else {
-      getDetails.find((curVal) => {
-        console.log(curVal);
+      return;
+    }
 
-        if (curVal.email === userEmail && curVal.password === userPassword) {
-          localStorage.setItem("inputUserName", JSON.stringify(curVal.name));
-
-          alert("Login Sucessfull!");
-          navigate("/home");
-        } else {
-          setMessage("*Invalid Login Credential*");
-        }
+    try {
+      const response = await fetch("http://localhost:3001/api/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // The body now sends an 'email' field
+        body: JSON.stringify(data),
       });
+
+      const responseData = await response.json();
+
+      if (response.ok) {
+        const token = responseData.token;
+        localStorage.setItem("token", token);
+
+        alert("Login Successful!");
+        navigate("/");
+      } else {
+        setMessage(`*Invalid Login Credential*`);
+        alert(`Error: ${responseData.error}`);
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setMessage("*An unexpected error occurred. Please try again.*");
     }
   };
 
@@ -124,9 +131,9 @@ const LogIn = () => {
                 Log In
               </button>
               <p className="mt-2 text-gray-600">
-                Don't have an account?
+                Don't have an account?{" "}
                 <Link to={"/signup"}>
-                  <span className="text-blue-700 underline cursor-pointer">
+                  <span className="text-blue-600 underline cursor-pointer font-semibold">
                     Signup
                   </span>
                 </Link>

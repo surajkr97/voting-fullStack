@@ -53,11 +53,11 @@ router.post("/signup", async (req, res) => {
 // Login Route, get token
 router.post("/login", async (req, res) => {
   try {
-    //Extract aadharCardNumber and password from request body
-    const { aadharCardNumber, password } = req.body;
+    //Extract email and password from request body
+    const { email, password } = req.body;
 
-    //Find the user by aadharCardNumber
-    const user = await User.findOne({ aadharCardNumber: aadharCardNumber });
+    //Find the user by email
+    const user = await User.findOne({ email: email });
 
     //If user does not exist or password does not match, return error
     if (!user || !(await user.comparePassword(password))) {

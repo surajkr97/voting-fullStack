@@ -29,10 +29,11 @@ const SignUp = () => {
     e.preventDefault();
 
     if (
-      data.name == "" ||
-      data.password == "" ||
-      data.address == "" ||
-      data.aadharCardNumber == ""
+      data.name.trim() == "" ||
+      data.password.trim() == "" ||
+      data.email.trim() == "" ||
+      data.address.trim() == "" ||
+      data.aadharCardNumber.trim() == ""
     ) {
       alert("Please Enter Your Detail");
       return;
@@ -126,6 +127,7 @@ const SignUp = () => {
                   name="email"
                   placeholder="Email"
                   className={inputField}
+                  required
                 />
                 <input
                   onChange={handleInput}
@@ -176,7 +178,7 @@ const SignUp = () => {
               Already have an account?{" "}
               <Link
                 to={"/login"}
-                className="text-blue-600 font-semibold hover:underline"
+                className="text-blue-600 underline font-semibold"
               >
                 Login
               </Link>
