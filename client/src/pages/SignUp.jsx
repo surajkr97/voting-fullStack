@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Unknown from "../assets/Images/Unknown.png";
+import signup from "../assets/Images/signup.png";
 import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
@@ -95,10 +95,10 @@ const SignUp = () => {
       </header>
 
       <div className="flex-grow flex justify-center items-center p-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 bg-white shadow-lg rounded-2xl overflow-hidden max-w-7xl w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-3 bg-white shadow-lg rounded-2xl overflow-hidden max-w-7xl w-full">
           {/* Image container for the first column */}
-          <div className="hidden md:flex justify-center items-center p-6 bg-orange-100">
-            <img src={Unknown} alt="SignUp" className="max-h-80" />
+          <div className="hidden md:flex justify-center items-center p-6">
+            <img src={signup} alt="SignUp" className="max-h-80" />
           </div>
 
           {/* This div will handle the two columns of input fields */}

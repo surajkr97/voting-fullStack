@@ -16,7 +16,7 @@ function UserList() {
 
   return (
     <div>
-      <h2>Users:</h2>
+      <h2 className="text-3xl flex justify-center items-center p-10 pb-0"><span className="px-5 py-3 rounded-full border-2 border-orange-700">Voters List :-</span></h2>
       <div className="grid grid-cols-1 gap-10 p-10 md:grid-cols-2 lg:grid-cols-3">
         {users.map((user) => (
           <Card key={user._id} data={user} type="user" />

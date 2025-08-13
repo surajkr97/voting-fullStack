@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
+import logo from "../assets/Images/logo.png";
 
 export default function Footer() {
   return (
@@ -7,10 +8,10 @@ export default function Footer() {
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
-            <Link to="/home" className="flex items-center">
+            <Link to="/" className="flex items-center">
               <img
-                src="https://alexharkness.com/wp-content/uploads/2020/06/logo-2.png"
-                className="mr-3 h-16"
+                src={logo}
+                className="h-30"
                 alt="Logo"
               />
             </Link>
@@ -23,7 +24,7 @@ export default function Footer() {
               <ul className="text-gray-500 font-medium">
                 <li className="mb-4">
                   <NavLink
-                    to="/home"
+                    to="/"
                     className={({ isActive }) =>
                       `${
                         isActive ? "text-orange-700" : "text-gray-500"
@@ -35,38 +36,26 @@ export default function Footer() {
                 </li>
                 <li className="mb-4">
                   <NavLink
-                    to="/about"
+                    to="/users"
                     className={({ isActive }) =>
                       `${
                         isActive ? "text-orange-700" : "text-gray-500"
                       } hover:underline`
                     }
                   >
-                    About
+                    Voters
                   </NavLink>
                 </li>
                 <li className="mb-4">
                   <NavLink
-                    to="/contact"
+                    to="/candidates"
                     className={({ isActive }) =>
                       `${
                         isActive ? "text-orange-700" : "text-gray-500"
                       } hover:underline`
                     }
                   >
-                    Contact
-                  </NavLink>
-                </li>
-                <li className="mb-4">
-                  <NavLink
-                    to="/github"
-                    className={({ isActive }) =>
-                      `${
-                        isActive ? "text-orange-700" : "text-gray-500"
-                      } hover:underline`
-                    }
-                  >
-                    Github
+                    Candidates
                   </NavLink>
                 </li>
               </ul>

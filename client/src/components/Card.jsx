@@ -1,4 +1,5 @@
 import React from "react";
+import { GiVote } from "react-icons/gi";
 
 const Card = ({ data, type, onVote }) => {
   if (!data) {
@@ -7,8 +8,8 @@ const Card = ({ data, type, onVote }) => {
 
   // Common styles for the card
   const cardStyles =
-    "bg-white shadow rounded-2xl overflow-hidden text-center p-6 border-2 border-gray-200";
-  const nameStyles = "mt-4 text-lg font-semibold text-gray-800";
+    "bg-orange-50 shadow rounded-2xl overflow-hidden text-center p-6 border-2 border-orange-400";
+  const nameStyles = "text-lg font-semibold text-gray-800";
   const detailStyles = "text-gray-500 text-sm";
   const labelStyles = "inline-block mt-3 px-3 py-1 text-sm rounded-full";
 
@@ -18,14 +19,18 @@ const Card = ({ data, type, onVote }) => {
       <div className={cardStyles}>
         <h3 className={nameStyles}>{data.name}</h3>
         <p className={detailStyles}>{data.party}</p>
-        <span className={`${labelStyles} bg-green-100 text-green-700`}>
+        <span
+          className={`${labelStyles} bg-green-100 text-green-700 border-1 border-green-700`}
+        >
           Votes: {data.voteCount}
-        </span> <br />
+        </span>{" "}
+        <br />
         <button
           onClick={() => onVote(data._id)} // Pass the candidate's ID to the onVote function
-          className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+          className="inline-flex items-center mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 cursor-pointer"
         >
-          Vote
+          <span className="mr-2">Vote</span>
+          <GiVote className="h-6 w-6" />
         </button>
       </div>
     );

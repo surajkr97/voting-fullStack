@@ -6,6 +6,7 @@ import LogIn from './pages/Login';
 import User from './pages/User';
 import CandidatesList from './pages/CandidateList'
 import UserList from './pages/UserList';
+import Layout from './components/Layout';
 
 
 function App() {
@@ -13,12 +14,13 @@ function App() {
   return (
     <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path='/' element={<Layout />}>
+      <Route index element={<Home />} />
       <Route path="/signup" element={<SignUp />} />      
       <Route path="/login" element={<LogIn />} />
       <Route path="/user/:userid" element={<User />} />
       <Route path="/users" element={<UserList />} />
-      <Route path="/candidates" element={<CandidatesList />} />
+      <Route path="/candidates" element={<CandidatesList />} /></Route>
     </Routes>
     </BrowserRouter>
   )
