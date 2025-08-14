@@ -127,6 +127,33 @@ router.put("/profile/password", jwtAuthMiddleware, async (req, res) => {
   }
 });
 
+// Add this new route below your POST /signup route:
+router.get("/:userName", async (req, res) => {
+  try {
+    // Extract the userName from the URL parameters
+    const userName = req.params.userName;
+
+    // Find the user by their userName
+    const user = await User.findOne({ userName: userName });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Return non-sensitive user data
+    const userData = {
+      name: user.name,
+      email: user.email,
+      isVoted: user.isVoted,
+      address: user.address,
+    };
+
+    res.status(200).json({ user: userData });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 
 module.exports = router;

@@ -18,7 +18,7 @@ function App() {
       <Route index element={<Home />} />
       <Route path="/signup" element={<SignUp />} />      
       <Route path="/login" element={<LogIn />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route path="/:userName" element={<Profile />} />
       <Route path="/users" element={<UserList />} />
       <Route path="/candidates" element={<CandidatesList />} /></Route>
     </Routes>

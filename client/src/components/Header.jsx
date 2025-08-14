@@ -1,13 +1,56 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from "../assets/Images/logo.png";
 
 export default function Header() {
+
   const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const logout = () => {
     localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    setCurrentUser(null);
     navigate("/login");
   };
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      const token = localStorage.getItem("token");
+      setIsLoggedIn(!!token);
+
+      if (!token) {
+        setCurrentUser(null);
+        return;
+      }
+
+      try {
+        //API endpoint to get the user's data
+        const response = await fetch("http://localhost:3001/api/user/profile", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data.");
+        }
+
+        const data = await response.json();
+        setCurrentUser(data.user);
+      } catch (err) {
+        console.error("Error fetching current user:", err);
+        setCurrentUser(null);
+        localStorage.removeItem("token");
+        setIsLoggedIn(false);
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
 
   return (
     <header className="shadow sticky z-50 top-0">
@@ -65,6 +108,20 @@ export default function Header() {
                   Candidates
                 </NavLink>
               </li>
+              {currentUser && (
+                <li>
+                  <NavLink
+                    to={`/${currentUser.userName}`}
+                    className={({ isActive }) =>
+                      `${
+                        isActive ? "text-orange-700" : "text-gray-700"
+                      } block py-2 pr-4 pl-3 duration-200 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0`
+                      }
+                    >
+                      Profile
+                  </NavLink>
+                </li>
+              )}
             </ul>
           </div>
         </div>
