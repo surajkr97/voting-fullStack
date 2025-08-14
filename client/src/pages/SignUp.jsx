@@ -5,12 +5,12 @@ import logo from "../assets/Images/logo.png";
 
 const SignUp = () => {
   const userDetail = {
+    userName: "",
     name: "",
     email: "",
-    password: "",
-    number: "",
     address: "",
     aadharCardNumber: "",
+    password: "",
   };
 
   const [data, setdata] = useState(userDetail);
@@ -30,6 +30,7 @@ const SignUp = () => {
     e.preventDefault();
 
     if (
+      data.userName.trim() == "" ||
       data.name.trim() == "" ||
       data.password.trim() == "" ||
       data.email.trim() == "" ||
@@ -113,6 +114,14 @@ const SignUp = () => {
                 <input
                   onChange={handleInput}
                   type="text"
+                  name="userName"
+                  placeholder="Username"
+                  className={inputField}
+                  required
+                />
+                <input
+                  onChange={handleInput}
+                  type="text"
                   name="name"
                   placeholder="Full Name"
                   className={inputField}
@@ -126,25 +135,10 @@ const SignUp = () => {
                   className={inputField}
                   required
                 />
-                <input
-                  onChange={handleInput}
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  className={inputField}
-                  required
-                />
               </div>
 
               {/* Input fields for the second column */}
               <div className="flex flex-col gap-2">
-                <input
-                  onChange={handleInput}
-                  type="text"
-                  name="number"
-                  placeholder="Mobile Number"
-                  className={inputField}
-                />
                 <input
                   onChange={handleInput}
                   type="text"
@@ -158,6 +152,14 @@ const SignUp = () => {
                   type="text"
                   name="aadharCardNumber"
                   placeholder="Aadhar Card Number"
+                  className={inputField}
+                  required
+                />
+                <input
+                  onChange={handleInput}
+                  type="password"
+                  name="password"
+                  placeholder="Password"
                   className={inputField}
                   required
                 />

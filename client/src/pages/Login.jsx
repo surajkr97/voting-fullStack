@@ -47,7 +47,7 @@ const LogIn = () => {
         const userId = decoded.id; // Assuming your payload has an 'id' field
 
         alert("Login Successful!");
-        navigate(`/candidates`);
+        navigate(`/`);
       } else {
         setMessage(`*Invalid Login Credential*`);
         alert(`Error: ${responseData.error}`);

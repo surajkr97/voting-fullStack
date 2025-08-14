@@ -46,7 +46,14 @@ router.post("/signup", async (req, res) => {
 
     res.status(200).json({ response: response, token: token });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    // Correctly handle the MongoServerError (code 11000)
+    if (error.code === 11000) {
+      const duplicateField = Object.keys(error.keyValue)[0];
+      return res.status(400).json({ error: `The ${duplicateField} you entered is already in use.` });
+    }
+    // For other errors, log and send a generic message
+    console.error("Signup error:", error);
+    res.status(500).json({ error: "An unexpected error occurred. Please try again." });
   }
 });
 

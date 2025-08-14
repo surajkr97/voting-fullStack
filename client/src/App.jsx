@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import SignUp from './pages/SignUp';
 import LogIn from './pages/Login';
-import User from './pages/User';
+import Profile from './pages/Profile';
 import CandidatesList from './pages/CandidateList'
 import UserList from './pages/UserList';
 import Layout from './components/Layout';
@@ -18,7 +18,7 @@ function App() {
       <Route index element={<Home />} />
       <Route path="/signup" element={<SignUp />} />      
       <Route path="/login" element={<LogIn />} />
-      <Route path="/user/:userid" element={<User />} />
+      <Route path="/profile" element={<Profile />} />
       <Route path="/users" element={<UserList />} />
       <Route path="/candidates" element={<CandidatesList />} /></Route>
     </Routes>

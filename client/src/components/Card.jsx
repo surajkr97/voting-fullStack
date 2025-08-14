@@ -39,7 +39,7 @@ const Card = ({ data, type, onVote }) => {
       <div className={cardStyles}>
         <h3 className={nameStyles}>{data.name}</h3>
         <p className={detailStyles}>Email: {data.email}</p>
-        <p className={detailStyles}>Mobile: {data.number}</p>
+        <p className={detailStyles}>Username: {data.userName}</p>
         <p className={detailStyles}>Address: {data.address}</p>
       </div>
     );

@@ -22,7 +22,7 @@ function CandidatesList() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // This is the key change!
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -45,7 +45,7 @@ function CandidatesList() {
 
   useEffect(() => {
     fetchCandidates();
-  }, [navigate]); // Added navigate to the dependency array
+  }, []);
 
   // This is the vote submission function
   const handleVote = async (candidateId) => {

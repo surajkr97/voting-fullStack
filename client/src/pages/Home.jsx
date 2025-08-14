@@ -6,7 +6,7 @@ import bgImage from "../assets/Images/bg.png";
 export default function Home() {
   return (
     <div
-      className="relstive w-full h-80 md:h-120 lg:h-191 flex"
+      className="relative w-full h-80 md:h-120 lg:h-191 flex"
       style={{
         backgroundImage: `url(${bgImage})`,
         backgroundSize: "cover",

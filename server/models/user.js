@@ -1,14 +1,14 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema({
+  userName: { type: String, required: true, unique: true },
   name: { type: String, required: true },
   email: { type: String, required: true },
-  number: { type: String},
   address: { type: String, required: true },
-  aadharCardNumber: { type: Number, required: true, unique: true },
+  aadharCardNumber: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, enum: ['voter', 'admin'], default: 'voter' },
+  role: { type: String, enum: ["voter", "admin"], default: "voter" },
   isVoted: { type: Boolean, default: false },
 });
 
@@ -30,5 +30,5 @@ userSchema.methods.comparePassword = function (candidatePassword) {
 };
 
 // Export the User model
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 module.exports = User;
