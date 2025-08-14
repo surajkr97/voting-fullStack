@@ -57,15 +57,18 @@ function CandidatesList() {
     }
 
     try {
-      const response = await fetch(`http://localhost:3001/api/candidate/vote/${candidateId}`, {
-        // Your vote endpoint
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        // body: JSON.stringify({ candidateId }),
-      });
+      const response = await fetch(
+        `http://localhost:3001/api/candidate/vote/${candidateId}`,
+        {
+          // Your vote endpoint
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          // body: JSON.stringify({ candidateId }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -76,7 +79,6 @@ function CandidatesList() {
 
       // Refresh the candidate list to show the updated vote count
       fetchCandidates();
-
     } catch (err) {
       alert(err.message);
       console.error("Error submitting vote:", err);
@@ -87,8 +89,14 @@ function CandidatesList() {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div>
-      <h2 className="text-3xl flex justify-center items-center p-10 pb-0"><span className="rounded-full border-2 border-orange-700 px-5 py-3">Candidates List to Vote :-</span></h2>
+    <div className=" bg-orange-50">
+      <h2 className="text-3xl font-bold text-center text-gray-800 p-10 pb-0">
+        <span className="relative inline-block pb-1">
+          Candidates List to Vote :-
+          <span className="absolute bottom-0 left-1/2 w-3/4 h-1 bg-orange-500 transform -translate-x-1/2"></span>
+        </span>
+      </h2>{" "}
+      <br />
       <div className="grid grid-cols-1 gap-10 p-10 md:grid-cols-2 lg:grid-cols-3">
         {candidates.map((candidate) => (
           <Card

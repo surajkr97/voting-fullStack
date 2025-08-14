@@ -15,8 +15,13 @@ function UserList() {
   console.log("Current users state:", users);
 
   return (
-    <div>
-      <h2 className="text-3xl flex justify-center items-center p-10 pb-0"><span className="px-5 py-3 rounded-full border-2 border-orange-700">Voters List :-</span></h2>
+    <div className=" bg-orange-50">
+      <h2 className="text-3xl font-bold text-center text-gray-800 p-10 pb-0">
+  <span className="relative inline-block pb-1">
+    Voters List :-
+    <span className="absolute bottom-0 left-1/2 w-3/4 h-1 bg-orange-500 transform -translate-x-1/2"></span>
+  </span>
+</h2>
       <div className="grid grid-cols-1 gap-10 p-10 md:grid-cols-2 lg:grid-cols-3">
         {users.map((user) => (
           <Card key={user._id} data={user} type="user" />
