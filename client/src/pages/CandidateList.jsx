@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Card from "../components/Card";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function CandidatesList() {
   const [candidates, setCandidates] = useState([]);
@@ -75,13 +76,13 @@ function CandidatesList() {
         throw new Error(errorData.error || "Failed to submit vote.");
       }
 
-      alert("Vote submitted successfully!");
+      toast.success("Successfully Signed Up");
 
       // Refresh the candidate list to show the updated vote count
       fetchCandidates();
     } catch (err) {
-      alert(err.message);
-      console.error("Error submitting vote:", err);
+      toast.error(err.message);
+      console.error(responseData.error);
     }
   };
 

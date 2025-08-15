@@ -1,13 +1,14 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const { lowerCase } = require("lodash");
 
 const userSchema = new mongoose.Schema({
-  userName: { type: String, required: true, unique: true },
-  name: { type: String, required: true },
-  email: { type: String, required: true },
-  address: { type: String, required: true },
-  aadharCardNumber: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  userName: { type: String, required: true, unique: true, minlength: 3, lowercase: true, set: (v) => v.replace(/\s+/g, "") },
+  name: { type: String, required: true, minlength: 3 },
+  email: { type: String, required: true, lowercase: true, minlength: 3 },
+  address: { type: String, required: true, minlength: 3 },
+  aadharCardNumber: { type: String, required: true, unique: true, minlength: 3 },
+  password: { type: String, required: true, minlength: 3 },
   role: { type: String, enum: ["voter", "admin"], default: "voter" },
   isVoted: { type: Boolean, default: false },
 });

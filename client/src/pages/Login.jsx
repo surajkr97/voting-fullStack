@@ -3,6 +3,7 @@ import login from "../assets/Images/login.png";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import logo from "../assets/Images/logo.png";
+import { toast } from "react-toastify";
 
 const LogIn = () => {
   const [data, setData] = useState({
@@ -43,14 +44,17 @@ const LogIn = () => {
         localStorage.setItem("token", token);
 
         // Decode the token to get the user's ID
+        //Can be us to dynamic routes in future updates
         const decoded = jwtDecode(token);
-        const userId = decoded.id; // Assuming your payload has an 'id' field
+        console.log("Decoded Token Payload:", decoded);
+        // const userId = decoded.id;
+        // navigate(`/${userId}`);
 
-        alert("Login Successful!");
+        toast.success("Successfully Signed Up");
         navigate(`/`);
       } else {
         setMessage(`*Invalid Login Credential*`);
-        alert(`Error: ${responseData.error}`);
+        toast.error(`Error: ${responseData.error}`);
       }
     } catch (error) {
       console.error("Login error:", error);

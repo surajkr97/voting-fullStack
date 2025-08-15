@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import signup from "../assets/Images/signup.png";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/Images/logo.png";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const userDetail = {
@@ -17,27 +18,24 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const handleInput = (e) => {
-    // console.log(e.target.name);
-    // console.log(e.target.value);
     const name = e.target.name;
     const value = e.target.value;
 
     setdata({ ...data, [name]: value });
   };
-  // console.log(data);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (
-      data.userName.trim() == "" ||
-      data.name.trim() == "" ||
-      data.password.trim() == "" ||
-      data.email.trim() == "" ||
-      data.address.trim() == "" ||
-      data.aadharCardNumber.trim() == ""
+      data.userName.trim().length < 3 ||
+      data.name.trim().length < 3 ||
+      data.password.trim().length < 3 ||
+      data.email.trim().length < 3 ||
+      data.address.trim().length < 3 ||
+      data.aadharCardNumber.trim().length < 3
     ) {
-      alert("Please Enter Your Detail");
+      toast.error("All fields must be at least 3 characters long");
       return;
     }
 
@@ -54,15 +52,14 @@ const SignUp = () => {
       const responseData = await response.json();
 
       if (response.ok) {
-        alert("Successfully Signed Up");
+        toast.success("Successfully Signed Up");
         navigate("/login");
       } else {
-        // Handle server-side errors (e.g., admin already exists, validation errors)
-        alert(`Error: ${responseData.error}`);
+        toast.error(`Error: ${responseData.error}`);
       }
     } catch (error) {
       console.error("Error during signup:", error);
-      alert("An unexpected error occurred. Please try again.");
+      toast.error("An unexpected error occurred. Please try again.");
     }
   };
 
@@ -280,7 +277,7 @@ const SignUp = () => {
   );
 };
 
-// A constant to keep styling consistent and clean
+//Keep styling consistent
 const inputField =
   "w-full mt-4 py-3 px-4 rounded-lg bg-white border border-gray-300 text-gray-800 font-semibold focus:border-orange-500 focus:ring-2 focus:ring-orange-200 focus:outline-none transition duration-300";
 
