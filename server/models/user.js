@@ -3,19 +3,35 @@ const bcrypt = require("bcrypt");
 const { lowerCase } = require("lodash");
 
 const userSchema = new mongoose.Schema({
-  userName: { type: String, required: true, unique: true, minlength: 3, lowercase: true, set: (v) => v.replace(/\s+/g, "") },
+  userName: {
+    type: String,
+    required: true,
+    unique: true,
+    minlength: 3,
+    lowercase: true,
+    set: (v) => v.replace(/\s+/g, ""),
+  },
   name: { type: String, required: true, minlength: 3 },
   email: { type: String, required: true, lowercase: true, minlength: 3 },
   address: { type: String, required: true, minlength: 3 },
-  aadharCardNumber: { type: String, required: true, unique: true, minlength: 3 },
+  aadharCardNumber: {
+    type: String,
+    required: true,
+    unique: true,
+    minlength: 3,
+  },
   password: { type: String, required: true, minlength: 3 },
   role: { type: String, enum: ["voter", "admin"], default: "voter" },
   isVoted: { type: Boolean, default: false },
   verificationToken: { type: String },
   otp: {
-        type: String,
-        required: false,
-    },
+    type: String,
+    required: false,
+  },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // 🔐 Hash password before saving

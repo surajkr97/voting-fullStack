@@ -20,32 +20,18 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const handleInput = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-
+    const { name, value } = e.target;
     setdata({ ...data, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      data.userName.trim().length < 3 ||
-      data.name.trim().length < 3 ||
-      data.password.trim().length < 3 ||
-      data.email.trim().length < 3 ||
-      data.address.trim().length < 3 ||
-      data.aadharCardNumber.trim().length < 3
-    ) {
-      toast.error("All fields must be at least 3 characters long");
-      return;
-    }
-
-    // If showOtpInput is true, handle OTP verification
     if (showOtpInput) {
+      // Step 2: Handle OTP verification
       try {
         const response = await fetch(
-          "http://localhost:3001/api/user/verify-otp",
+          "http://localhost:3001/api/user/verify-otp", // Corrected endpoint
           {
             method: "POST",
             headers: {
@@ -59,7 +45,7 @@ const SignUp = () => {
 
         if (response.ok) {
           toast.success("Account verified successfully!");
-          navigate("/login");
+          navigate("/login"); // Redirect only after OTP verification is successful
         } else {
           toast.error(`Error: ${responseData.message}`);
         }
@@ -68,9 +54,21 @@ const SignUp = () => {
         toast.error("An unexpected error occurred. Please try again.");
       }
     } else {
+      // Step 1: Handle initial signup
+      if (
+        data.userName.trim().length < 3 ||
+        data.name.trim().length < 3 ||
+        data.password.trim().length < 3 ||
+        data.email.trim().length < 3 ||
+        data.address.trim().length < 3 ||
+        data.aadharCardNumber.trim().length < 3
+      ) {
+        toast.error("All fields must be at least 3 characters long");
+        return;
+      }
+
       try {
-        // Connect to the backend API
-        const response = await fetch("http://localhost:3001/api/user/signup", {
+        const response = await fetch("http://localhost:3001/api/user/signup", { // Corrected endpoint
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -81,8 +79,8 @@ const SignUp = () => {
         const responseData = await response.json();
 
         if (response.ok) {
-          toast.success("Successfully Signed Up");
-          navigate("/login");
+          toast.success("Successfully Signed Up. Please check your email for the OTP.");
+          setShowOtpInput(true); // Switch to the OTP input view
         } else {
           toast.error(`Error: ${responseData.error}`);
         }
@@ -92,6 +90,10 @@ const SignUp = () => {
       }
     }
   };
+
+  // Keep styling consistent
+  const inputField =
+    "w-full mt-4 py-3 px-4 rounded-lg bg-white border border-gray-300 text-gray-800 font-semibold focus:border-orange-500 focus:ring-2 focus:ring-orange-200 focus:outline-none transition duration-300";
 
   return (
     <div className="md:h-screen flex flex-col bg-gray-100">
@@ -126,79 +128,101 @@ const SignUp = () => {
             <img src={signup} alt="SignUp" className="max-h-80" />
           </div>
 
-          {/* This div will handle the two columns of input fields */}
           <form
             onSubmit={handleSubmit}
             className="p-8 col-span-2 flex flex-col justify-center"
           >
-            <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
-              Sign Up
-            </h2>
+            {!showOtpInput ? (
+              // This is the initial signup form
+              <>
+                <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
+                  Sign Up
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-2">
+                    <input
+                      onChange={handleInput}
+                      type="text"
+                      name="userName"
+                      placeholder="Username"
+                      className={inputField}
+                      required
+                    />
+                    <input
+                      onChange={handleInput}
+                      type="text"
+                      name="name"
+                      placeholder="Full Name"
+                      className={inputField}
+                      required
+                    />
+                    <input
+                      onChange={handleInput}
+                      type="email"
+                      name="email"
+                      placeholder="Email"
+                      className={inputField}
+                      required
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <input
+                      onChange={handleInput}
+                      type="text"
+                      name="address"
+                      placeholder="Address"
+                      className={inputField}
+                      required
+                    />
+                    <input
+                      onChange={handleInput}
+                      type="text"
+                      name="aadharCardNumber"
+                      placeholder="Aadhar Card Number"
+                      className={inputField}
+                      required
+                    />
+                    <input
+                      onChange={handleInput}
+                      type="password"
+                      name="password"
+                      placeholder="Password"
+                      className={inputField}
+                      required
+                    />
+                  </div>
+                </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Input fields for the first column */}
-              <div className="flex flex-col gap-2">
+                <button
+                  type="submit"
+                  className="w-full bg-orange-700 text-white font-bold py-3 px-6 rounded-lg mt-6 hover:bg-orange-600 transition duration-300"
+                >
+                  Sign Up
+                </button>
+              </>
+            ) : (
+              // This is the OTP verification form
+              <>
+                <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
+                  Enter Your OTP
+                </h2>
                 <input
-                  onChange={handleInput}
                   type="text"
-                  name="userName"
-                  placeholder="Username"
+                  name="otp"
+                  placeholder="Enter OTP"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
                   className={inputField}
                   required
                 />
-                <input
-                  onChange={handleInput}
-                  type="text"
-                  name="name"
-                  placeholder="Full Name"
-                  className={inputField}
-                  required
-                />
-                <input
-                  onChange={handleInput}
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  className={inputField}
-                  required
-                />
-              </div>
-
-              {/* Input fields for the second column */}
-              <div className="flex flex-col gap-2">
-                <input
-                  onChange={handleInput}
-                  type="text"
-                  name="address"
-                  placeholder="Address"
-                  className={inputField}
-                  required
-                />
-                <input
-                  onChange={handleInput}
-                  type="text"
-                  name="aadharCardNumber"
-                  placeholder="Aadhar Card Number"
-                  className={inputField}
-                  required
-                />
-                <input
-                  onChange={handleInput}
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  className={inputField}
-                  required
-                />
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-orange-700 text-white font-bold py-3 px-6 rounded-lg mt-6 hover:bg-orange-600 transition duration-300"
-            >
-              Sign Up
-            </button>
+                <button
+                  type="submit"
+                  className="w-full bg-orange-700 text-white font-bold py-3 px-6 rounded-lg mt-6 hover:bg-orange-600 transition duration-300"
+                >
+                  Verify OTP
+                </button>
+              </>
+            )}
 
             <p className="mt-4 text-center text-gray-600">
               Already have an account?{" "}
@@ -215,9 +239,9 @@ const SignUp = () => {
 
       <div className="w-[90vw] mx-auto pb-6 flex-none">
         <hr className="my-6 border-gray-200 sm:mx-auto lg:my-8" />
-       <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center">
           <span className="text-sm text-gray-500 sm:text-center">
-            © 2025 - Made with ♥️ by {" "}
+            © 2025 - Made with ♥️ by{" "}
             <a href="https://github.com/surajkr97" className="hover:underline">
               surajkr97
             </a>
@@ -228,9 +252,5 @@ const SignUp = () => {
     </div>
   );
 };
-
-//Keep styling consistent
-const inputField =
-  "w-full mt-4 py-3 px-4 rounded-lg bg-white border border-gray-300 text-gray-800 font-semibold focus:border-orange-500 focus:ring-2 focus:ring-orange-200 focus:outline-none transition duration-300";
 
 export default SignUp;

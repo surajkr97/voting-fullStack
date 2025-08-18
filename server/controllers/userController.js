@@ -14,7 +14,7 @@ exports.signup = async (req, res) => {
     }
 
     // Hash password
-    req.body.password = await bcrypt.hash(req.body.password, 10);
+    // req.body.password = await bcrypt.hash(req.body.password, 10);
 
     // Generate a 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -101,14 +101,42 @@ exports.verifyOTP = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    // Debugging Step 1: Check the incoming data
+    console.log("Login attempt for email:", email);
+    console.log("Password entered:", password);
+
     const user = await User.findOne({ email });
-    if (!user || !(await user.comparePassword(password))) {
+
+    // 1. Check if user exists and password is correct
+    if (!user) {
+      console.log("User not found with this email.");
       return res.status(401).json({ error: "Invalid username or password" });
     }
+
+    // 2. Check if the password is correct
+    const isPasswordCorrect = await user.comparePassword(password);
+    if (!isPasswordCorrect) {
+      console.log("Password does not match for user:", email);
+      return res.status(401).json({ error: "Invalid username or password" });
+    }
+
+    // 3. Add this crucial check for account verification
+    if (!user.isVerified) {
+      console.log("User account is not verified.");
+      return res.status(401).json({
+        error:
+          "Account not verified. Please check your email for the OTP and verify your account.",
+      });
+    }
+
+    // 4. If verified, generate and send the token
+    console.log("Login successful! Generating token.");
     const payload = { id: user.id };
     const token = generateToken(payload);
     res.json({ token });
   } catch (err) {
+    console.error("Login Error:", err);
     res.status(500).json({ error: err.message });
   }
 };
