@@ -11,6 +11,11 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true, minlength: 3 },
   role: { type: String, enum: ["voter", "admin"], default: "voter" },
   isVoted: { type: Boolean, default: false },
+  verificationToken: { type: String },
+  otp: {
+        type: String,
+        required: false,
+    },
 });
 
 // 🔐 Hash password before saving
