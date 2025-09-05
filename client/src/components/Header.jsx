@@ -3,7 +3,6 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from "../assets/Images/logo.png";
 
 export default function Header() {
-
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -12,7 +11,7 @@ export default function Header() {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
     setCurrentUser(null);
-    navigate("/login");
+    navigate("/");
   };
 
   useEffect(() => {
@@ -60,12 +59,17 @@ export default function Header() {
             <img src={logo} className="h-16" alt="Logo" />
           </Link>
           <div className="flex items-center lg:order-2">
-            <button
+            {isLoggedIn ? (<button
               onClick={logout}
               className="text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
             >
               Log Out
-            </button>
+            </button>) : (<button
+              onClick={()=> navigate("/login")}
+              className="text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
+            >
+              Log In
+            </button>)}
           </div>
           <div
             className="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1"
@@ -116,9 +120,9 @@ export default function Header() {
                       `${
                         isActive ? "text-orange-700" : "text-gray-700"
                       } block py-2 pr-4 pl-3 duration-200 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0`
-                      }
-                    >
-                      Profile
+                    }
+                  >
+                    Profile
                   </NavLink>
                 </li>
               )}

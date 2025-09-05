@@ -132,7 +132,7 @@ const LogIn = () => {
 
               <button
                 type="submit"
-                className="w-full bg-orange-700 hover:bg-blue-dark text-white font-bold py-3 px-6 rounded-lg mt-3 hover:bg-orange-600 transition ease-in-out duration-300"
+                className="w-full bg-orange-700 cursor-pointer hover:bg-blue-dark text-white font-bold py-3 px-6 rounded-lg mt-3 hover:bg-orange-600 transition ease-in-out duration-300"
               >
                 Log In
               </button>

@@ -17,6 +17,7 @@ const SignUp = () => {
   const [data, setdata] = useState(userDetail);
   const [showOtpInput, setShowOtpInput] = useState(false);
   const [otp, setOtp] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleInput = (e) => {
@@ -26,6 +27,8 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
 
     if (showOtpInput) {
       // Step 2: Handle OTP verification
@@ -68,7 +71,8 @@ const SignUp = () => {
       }
 
       try {
-        const response = await fetch("http://localhost:3001/api/user/signup", { // Corrected endpoint
+        const response = await fetch("http://localhost:3001/api/user/signup", {
+          // Corrected endpoint
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -79,7 +83,9 @@ const SignUp = () => {
         const responseData = await response.json();
 
         if (response.ok) {
-          toast.success("Successfully Signed Up. Please check your email for the OTP.");
+          toast.success(
+            "Successfully Signed Up. Please check your email for the OTP."
+          );
           setShowOtpInput(true); // Switch to the OTP input view
         } else {
           toast.error(`Error: ${responseData.error}`);
@@ -87,6 +93,8 @@ const SignUp = () => {
       } catch (error) {
         console.error("Error during signup:", error);
         toast.error("An unexpected error occurred. Please try again.");
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -195,9 +203,10 @@ const SignUp = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-orange-700 text-white font-bold py-3 px-6 rounded-lg mt-6 hover:bg-orange-600 transition duration-300"
+                  className="w-full bg-orange-700 text-white cursor-pointer font-bold py-3 px-6 rounded-lg mt-6 hover:bg-orange-600 transition duration-300"
+                  disabled={loading}
                 >
-                  Sign Up
+                    {loading ? "Signing Up..." : "Sign Up"}
                 </button>
               </>
             ) : (
@@ -217,7 +226,7 @@ const SignUp = () => {
                 />
                 <button
                   type="submit"
-                  className="w-full bg-orange-700 text-white font-bold py-3 px-6 rounded-lg mt-6 hover:bg-orange-600 transition duration-300"
+                  className="w-full bg-orange-700 text-white cursor-pointer font-bold py-3 px-6 rounded-lg mt-6 hover:bg-orange-600 transition duration-300"
                 >
                   Verify OTP
                 </button>
