@@ -8,7 +8,7 @@ const Card = ({ data, type, onVote }) => {
 
   // Common styles for the card
   const cardStyles =
-    "bg-white rounded-2xl shadow-xl overflow-hidden text-center transition-transform duration-300 hover:scale-105";
+    "bg-white rounded-2xl shadow-xl overflow-hidden text-center transition-transform duration-300 hover:scale-105 break-all";
   const nameStyles = "text-3xl font-bold text-center mb-4";
   const detailStyles = "text-gray-700 text-md";
   const labelStyles =
@@ -44,17 +44,17 @@ const Card = ({ data, type, onVote }) => {
         <div className="p-8">
           <h3 className={`${nameStyles} text-orange-700 mb-6`}>{data.name}</h3>
           <p className="flex justify-between items-center text-gray-600">
-            <span className="font-semibold text-gray-800">Username:</span>
+            <span className="font-semibold text-gray-800 whitespace-nowrap mr-3">Username:</span>
             <span className="text-right">{data.userName}</span>
           </p>
           <hr className="my-4 border-orange-200" />
           <p className="flex justify-between items-center text-gray-600">
-            <span className="font-semibold text-gray-800">Email:</span>
+            <span className="font-semibold text-gray-800 whitespace-nowrap mr-4">Email:</span>
             <span className="text-right">{data.email}</span>
           </p>
           <hr className="my-4 border-orange-200" />
           <p className="flex justify-between items-center text-gray-600">
-            <span className="font-semibold text-gray-800">Address:</span>
+            <span className="font-semibold text-gray-800 whitespace-nowrap mr-3">Address:</span>
             <span className="text-right">{data.address}</span>
           </p>
         </div>

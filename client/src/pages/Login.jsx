@@ -11,7 +11,7 @@ const LogIn = () => {
     password: "",
   });
 
-  const [message, setMessage] = useState("");
+  // const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -23,7 +23,7 @@ const LogIn = () => {
     e.preventDefault();
 
     if (!data.email.trim() || !data.password.trim()) {
-      setMessage("*Please Enter Your Details*");
+      toast.error("Please enter your details.");
       return;
     }
 
@@ -46,19 +46,23 @@ const LogIn = () => {
         // Decode the token to get the user's ID
         //Can be us to dynamic routes in future updates
         const decoded = jwtDecode(token);
+        const userRole = decoded.role;
         console.log("Decoded Token Payload:", decoded);
-        // const userId = decoded.id;
-        // navigate(`/${userId}`);
 
-        toast.success("Successfully Signed Up");
-        navigate(`/`);
+        // Check the user's role and navigate accordingly
+        if (userRole === "admin") {
+          toast.success("Admin logged in successfully!");
+          navigate("/admin-dashboard");
+        } else {
+          toast.success("Successfully logged in!");
+          navigate("/");
+        }
       } else {
-        setMessage(`*Invalid Login Credential*`);
-        toast.error(`Error: ${responseData.error}`);
+        toast.error(responseData.error || "Invalid login credentials.");
       }
     } catch (error) {
       console.error("Login error:", error);
-      setMessage("*An unexpected error occurred. Please try again.*");
+      toast.error("An unexpected error occurred. Please try again.");
     }
   };
 
