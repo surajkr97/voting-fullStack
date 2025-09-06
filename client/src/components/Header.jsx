@@ -4,51 +4,32 @@ import logo from "../assets/Images/logo.png";
 
 export default function Header() {
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+  const [role, setRole] = useState(localStorage.getItem("role"));
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("role");
     setIsLoggedIn(false);
-    setCurrentUser(null);
+    setRole(null);
     navigate("/");
   };
 
   useEffect(() => {
-    const fetchCurrentUser = async () => {
-      const token = localStorage.getItem("token");
-      setIsLoggedIn(!!token);
-
-      if (!token) {
-        setCurrentUser(null);
-        return;
-      }
-
-      try {
-        //API endpoint to get the user's data
-        const response = await fetch("http://localhost:3001/api/user/profile", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch user data.");
-        }
-
-        const data = await response.json();
-        setCurrentUser(data.user);
-      } catch (err) {
-        console.error("Error fetching current user:", err);
-        setCurrentUser(null);
-        localStorage.removeItem("token");
-        setIsLoggedIn(false);
-      }
+    const handleStorageChange = () => {
+      setIsLoggedIn(!!localStorage.getItem("token"));
+      setRole(localStorage.getItem("role"));
     };
 
-    fetchCurrentUser();
+    // update on load
+    handleStorageChange();
+
+    // listen for localStorage changes
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
   }, []);
 
   return (
@@ -58,19 +39,27 @@ export default function Header() {
           <Link to="/" className="flex items-center cursor-pointer">
             <img src={logo} className="h-16" alt="Logo" />
           </Link>
+
+          {/* Login / Logout Button */}
           <div className="flex items-center lg:order-2">
-            {isLoggedIn ? (<button
-              onClick={logout}
-              className="text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
-            >
-              Log Out
-            </button>) : (<button
-              onClick={()=> navigate("/login")}
-              className="text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
-            >
-              Log In
-            </button>)}
+            {isLoggedIn ? (
+              <button
+                onClick={logout}
+                className="text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
+              >
+                Log Out
+              </button>
+            ) : (
+              <button
+                onClick={() => navigate("/login")}
+                className="text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
+              >
+                Log In
+              </button>
+            )}
           </div>
+
+          {/* Navigation Links */}
           <div
             className="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1"
             id="mobile-menu-2"
@@ -112,17 +101,17 @@ export default function Header() {
                   Candidates
                 </NavLink>
               </li>
-              {currentUser && (
+              {role === "admin" && (
                 <li>
                   <NavLink
-                    to={`/${currentUser.userName}`}
+                    to="/admin-dashboard"
                     className={({ isActive }) =>
                       `${
                         isActive ? "text-orange-700" : "text-gray-700"
                       } block py-2 pr-4 pl-3 duration-200 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0`
                     }
                   >
-                    Profile
+                    Admin
                   </NavLink>
                 </li>
               )}

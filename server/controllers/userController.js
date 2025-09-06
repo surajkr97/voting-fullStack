@@ -38,13 +38,8 @@ exports.signup = async (req, res) => {
       htmlContent
     );
 
-    // Generate JWT token
-    const payload = { id: response.id };
-    const token = generateToken(payload);
-
     res.status(200).json({
       response,
-      token,
       message: "Signup successful! Verification email sent.",
     });
   } catch (error) {
@@ -87,6 +82,14 @@ exports.verifyOTP = async (req, res) => {
     user.isVerified = true;
     user.otp = null; // Clear the OTP to prevent reuse
     await user.save();
+
+    // Token generation is here
+    const payload = {
+      id: user.id,
+      role: user.role,
+      isVerified: user.isVerified
+    };
+    const token = generateToken(payload);
 
     res.status(200).json({
       message: "OTP verified successfully. Your account is now active!",
@@ -132,8 +135,14 @@ exports.login = async (req, res) => {
 
     // 4. If verified, generate and send the token
     console.log("Login successful! Generating token.");
-    const payload = { id: user.id };
+
+    const payload = {
+      id: user.id,
+      role: user.role,
+    };
+
     const token = generateToken(payload);
+
     res.json({ token });
   } catch (err) {
     console.error("Login Error:", err);

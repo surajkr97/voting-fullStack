@@ -32,7 +32,11 @@ exports.createCandidate = async (req, res) => {
     const response = await newCandidate.save();
     res.json({ response });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    if (err.name === "ValidationError") {
+      const messages = Object.values(err.errors).map((val) => val.message);
+      return res.status(400).json({ error: messages.join(", ") });
+    }
+    res.status(500).json({ error: err.message || "Internal Server Error" });
   }
 };
 
@@ -80,15 +84,19 @@ exports.vote = async (req, res) => {
     const userId = req.user.id;
 
     const candidate = await Candidate.findById(candidateID);
-    if (!candidate) return res.status(404).json({ message: "Candidate not found" });
+    if (!candidate)
+      return res.status(404).json({ message: "Candidate not found" });
 
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    if (user.isVoted) return res.status(400).json({ message: "You have already voted" });
-    if (user.role === "admin") return res.status(403).json({ message: "Admin is not allowed" });
+    if (user.isVoted)
+      return res.status(400).json({ message: "You have already voted" });
+    if (user.role === "admin")
+      return res.status(403).json({ message: "Admin is not allowed" });
 
-    await Candidate.findByIdAndUpdate(candidateID,
+    await Candidate.findByIdAndUpdate(
+      candidateID,
       { $push: { votes: { user: userId } }, $inc: { voteCount: 1 } },
       { new: true }
     );
@@ -105,7 +113,10 @@ exports.vote = async (req, res) => {
 exports.voteCount = async (req, res) => {
   try {
     const candidate = await Candidate.find().sort({ voteCount: "desc" });
-    const voteRecord = candidate.map((c) => ({ party: c.party, count: c.voteCount }));
+    const voteRecord = candidate.map((c) => ({
+      party: c.party,
+      count: c.voteCount,
+    }));
     res.json({ voteRecord });
   } catch (e) {
     res.status(500).json({ error: "Internal Server Error" });

@@ -47,6 +47,8 @@ const LogIn = () => {
         //Can be us to dynamic routes in future updates
         const decoded = jwtDecode(token);
         const userRole = decoded.role;
+        localStorage.setItem("role", userRole);
+        
         console.log("Decoded Token Payload:", decoded);
 
         // Check the user's role and navigate accordingly
@@ -94,9 +96,9 @@ const LogIn = () => {
 
       <div className="relative flex flex-1 items-top justify-center min-h-110 sm:items-center sm:pt-0">
         <div className="max-w-6xl mx-auto p-6">
-          <p className="flex justify-center rounded-md p-2 text-xl text-red-500">
+          {/* <p className="flex justify-center rounded-md p-2 text-xl text-red-500">
             {message}
-          </p>
+          </p> */}
           <div className="grid grid-cols-1 md:grid-cols-2">
             <div className="h-70 w-70 mt-3">
               <img src={login} alt="SignUp Img" />
