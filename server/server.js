@@ -1,25 +1,33 @@
-const express = require('express')
-const app = express()
-const db = require('./db'); 
+const express = require('express');
+const app = express();
+const path = require('path');
 require('dotenv').config();
 const cors = require('cors');
-app.use(cors());
-
-
 const bodyParser = require('body-parser');
+const db = require('./db');
+
+// Middleware
+app.use(cors());
 app.use(bodyParser.json());
 
-const port = process.env.PORT || 3001; // Default to port 3001 if not specified
-
-
-//Import the router files
+// Import routers
 const userRoutes = require('./routes/userRoutes');
 const candidateRoutes = require('./routes/candidateRoutes');
 
-//Use the routers
+// Use routers
 app.use('/api/user', userRoutes);
 app.use('/api/candidate', candidateRoutes);
 
+// Serve React frontend
+const clientBuildPath = path.join(__dirname, 'client/build'); // Update if your build folder is elsewhere
+app.use(express.static(clientBuildPath));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(clientBuildPath, 'index.html'));
+});
+
+// Start server
+const port = process.env.PORT || 3001;
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`Server running on port ${port}`);
+});
