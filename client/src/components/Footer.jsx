@@ -3,20 +3,19 @@ import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/Images/logo.png";
 
 export default function Footer() {
+  const role = localStorage.getItem("role");
+
   return (
     <footer className="bg-white border-y">
       <div className="mx-auto w-full max-w-screen-xl px-6 py-6 lg:py-8">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
             <Link to="/" className="flex items-center">
-              <img
-                src={logo}
-                className="h-20"
-                alt="Logo"
-              />
+              <img src={logo} className="h-20" alt="Logo" />
             </Link>
           </div>
           <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
+            {/* Resources */}
             <div>
               <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase">
                 Resources
@@ -58,15 +57,31 @@ export default function Footer() {
                     Candidates
                   </NavLink>
                 </li>
+                {role === "admin" && (
+                  <li className="mb-4">
+                    <NavLink
+                      to="/admin-dashboard"
+                      className={({ isActive }) =>
+                        `${
+                          isActive ? "text-orange-700" : "text-gray-500"
+                        } hover:underline`
+                      }
+                    >
+                      Admin
+                    </NavLink>
+                  </li>
+                )}
               </ul>
             </div>
+
+            {/* Follow us */}
             <div>
               <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase">
                 Follow us
               </h2>
               <ul className="text-gray-500 font-medium">
                 <li className="mb-4">
-                <Link to="#" className="hover:underline">
+                  <Link to="#" className="hover:underline">
                     Github
                   </Link>
                 </li>
@@ -82,6 +97,8 @@ export default function Footer() {
                 </li>
               </ul>
             </div>
+
+            {/* Legal */}
             <div className="hidden sm:block">
               <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase">
                 Legal
@@ -101,17 +118,20 @@ export default function Footer() {
             </div>
           </div>
         </div>
+
+        {/* Bottom Section */}
         <hr className="my-6 border-gray-200 sm:mx-auto lg:my-8" />
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-sm text-gray-500 sm:text-center">
-            © 2025-
+            © 2025{" "}
             <a href="https://github.com/surajkr97" className="hover:underline">
               surajkr97
             </a>
             . All Rights Reserved.
           </span>
+          {/* Social icons */}
           <div className="flex mt-4 space-x-5 sm:justify-center sm:mt-0">
-            <Link to="#" className="text-gray-500 hover:text-gray-900">
+            {/* keep existing icons */}<Link to="#" className="text-gray-500 hover:text-gray-900">
               <svg
                 className="w-4 h-4"
                 aria-hidden="true"
@@ -186,8 +206,8 @@ export default function Footer() {
                 />
               </svg>
               <span className="sr-only">Dribbble account</span>
-            </Link>
-          </div>
+            </Link>          
+            </div>
         </div>
       </div>
     </footer>

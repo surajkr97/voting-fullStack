@@ -145,12 +145,14 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-100">
       {/* Sidebar */}
-      <div className="w-64 bg-gradient-to-tl from-gray-800 to-orange-800 text-white p-6 shadow-lg">
-        <h1 className="text-2xl font-bold mb-8">Admin Panel</h1>
+      <div className="md:w-64 w-full md:h-auto bg-gradient-to-tl from-gray-800 to-orange-800 text-white p-6 shadow-lg">
+        <h1 className="text-2xl font-bold mb-6 md:mb-8 text-center md:text-left">
+          Admin Panel
+        </h1>
         <nav>
-          <ul>
+          <ul className="flex md:flex-col justify-center md:justify-start space-x-6 md:space-x-0">
             <li className="mb-4">
               <a
                 href="#"
@@ -164,16 +166,16 @@ const AdminDashboard = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-grow p-10">
-        <header className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-800">
+      <div className="flex-grow p-6 md:p-10">
+        <header className="mb-6 md:mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 text-center md:text-left">
             Candidates Management
           </h2>
         </header>
 
         {/* Add Candidate Form */}
         <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">
+          <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-4">
             Add New Candidate
           </h3>
           <form
@@ -221,35 +223,31 @@ const AdminDashboard = () => {
 
         {/* Candidates List */}
         <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-2xl font-bold text-gray-800 mb-4">
+          <h3 className="text-lg md:text-2xl font-bold text-gray-800 mb-4">
             Candidates List
           </h3>
           <div className="overflow-x-auto">
-            <table className="min-w-full table-auto">
+            <table className="min-w-full table-auto text-sm md:text-base">
               <thead>
-                <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                  <th className="py-3 px-6 text-left">Name</th>
-                  <th className="py-3 px-6 text-left">Party</th>
-                  <th className="py-3 px-6 text-left">Age</th>
-                  <th className="py-3 px-6 text-left">Vote Count</th>
-                  <th className="py-3 px-6 text-left">Delete</th>
+                <tr className="bg-gray-200 text-gray-600 uppercase text-xs md:text-sm leading-normal">
+                  <th className="py-3 px-4 text-left">Name</th>
+                  <th className="py-3 px-4 text-left">Party</th>
+                  <th className="py-3 px-4 text-left">Age</th>
+                  <th className="py-3 px-4 text-left">Vote Count</th>
+                  <th className="py-3 px-4 text-left">Delete</th>
                 </tr>
               </thead>
-              <tbody className="text-gray-600 text-sm font-light">
+              <tbody className="text-gray-600 font-light">
                 {candidates.map((candidate) => (
                   <tr
                     key={candidate._id}
                     className="border-b border-gray-200 hover:bg-gray-100"
                   >
-                    <td className="py-3 px-6 text-left whitespace-nowrap">
-                      {candidate.name}
-                    </td>
-                    <td className="py-3 px-6 text-left">{candidate.party}</td>
-                    <td className="py-3 px-6 text-left">{candidate.age}</td>
-                    <td className="py-3 px-6 text-left">
-                      {candidate.voteCount}
-                    </td>
-                    <td className="py-3 px-6 text-left">
+                    <td className="py-3 px-4">{candidate.name}</td>
+                    <td className="py-3 px-4">{candidate.party}</td>
+                    <td className="py-3 px-4">{candidate.age}</td>
+                    <td className="py-3 px-4">{candidate.voteCount}</td>
+                    <td className="py-3 px-4">
                       <button onClick={() => handleDelete(candidate._id)}>
                         🗑️
                       </button>
