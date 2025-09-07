@@ -21,16 +21,17 @@ const candidateRoutes = require('./routes/candidateRoutes');
 app.use('/api/user', userRoutes);
 app.use('/api/candidate', candidateRoutes);
 
-// Serve React frontend
-const clientBuildPath = path.join(__dirname, '../client/dist');
+// Serve React frontend (Vite build)
+const clientBuildPath = path.resolve(__dirname, '../client/dist');
 app.use(express.static(clientBuildPath));
 
+// Fallback for React Router
 app.get('*', (req, res) => {
-  res.sendFile(path.join(clientBuildPath, 'index.html'));
+  res.sendFile(path.resolve(clientBuildPath, 'index.html'));
 });
 
 // Start server
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 10000; // Render automatically provides PORT
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
