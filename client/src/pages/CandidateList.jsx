@@ -9,7 +9,7 @@ function CandidatesList() {
 
   const fetchCandidates = async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/candidate", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/candidate`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
@@ -42,7 +42,7 @@ function CandidatesList() {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/api/candidate/vote/${candidateId}`,
+        `${import.meta.env.VITE_API_URL}/candidate/vote/${candidateId}`,
         {
           method: "POST",
           headers: {

@@ -6,7 +6,7 @@ function UserList() {
 
   useEffect(() => {
     //Backend API endpoint
-    fetch("http://localhost:3001/api/user")
+    fetch(`${import.meta.env.VITE_API_URL}/user`)
       .then((response) => response.json())
       .then((data) => setUsers(data))
       .catch((error) => console.error("Error:", error));

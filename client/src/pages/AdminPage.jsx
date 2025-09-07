@@ -43,7 +43,7 @@ const AdminDashboard = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3001/api/candidate/", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/candidate/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -82,7 +82,7 @@ const AdminDashboard = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3001/api/candidate/", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/candidate/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -121,7 +121,7 @@ const AdminDashboard = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:3001/api/candidate/${id}`,
+        `${import.meta.env.VITE_API_URL}/candidate/${id}`,
         {
           method: "DELETE",
           headers: {

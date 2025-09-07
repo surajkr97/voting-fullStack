@@ -34,7 +34,7 @@ const SignUp = () => {
       // Step 2: Handle OTP verification
       try {
         const response = await fetch(
-          "http://localhost:3001/api/user/verify-otp", // Corrected endpoint
+          `${import.meta.env.VITE_API_URL}/user/verify-otp`, // Corrected endpoint
           {
             method: "POST",
             headers: {
@@ -71,7 +71,7 @@ const SignUp = () => {
       }
 
       try {
-        const response = await fetch("http://localhost:3001/api/user/signup", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/user/signup`, {
           // Corrected endpoint
           method: "POST",
           headers: {
