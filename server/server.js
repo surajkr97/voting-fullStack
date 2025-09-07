@@ -19,7 +19,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/candidate', candidateRoutes);
 
 // Serve React frontend
-const clientBuildPath = path.join(__dirname, 'client/build'); // Update if your build folder is elsewhere
+const clientBuildPath = path.join(__dirname, 'client/dist');
 app.use(express.static(clientBuildPath));
 
 app.get('*', (req, res) => {

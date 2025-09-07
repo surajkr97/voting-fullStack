@@ -17,8 +17,8 @@ server/.env
 # Build & dist folders
 client/build/
 server/dist/
-dist/
-build/
+# dist/
+# build/
 
 # OS-specific
 .DS_Store
