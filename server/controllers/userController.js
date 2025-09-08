@@ -18,6 +18,7 @@ exports.signup = async (req, res) => {
 
     // Generate a 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otpExpiresAt = Date.now() + 5 * 60 * 1000;
 
     const newUser = new User(req.body);
     newUser.otp = otp;
@@ -58,6 +59,10 @@ exports.verifyOTP = async (req, res) => {
   try {
     const { email, otp } = req.body;
 
+    if (!email || !otp) {
+      return res.status(400).json({ message: "Email and OTP are required." });
+    }
+
     // 1. Find the user by their email
     const user = await User.findOne({ email });
 
@@ -67,32 +72,35 @@ exports.verifyOTP = async (req, res) => {
     }
 
     // 3. Compare the provided OTP with the one stored in the user document
-    if (user.otp !== otp) {
-      // Make sure 'otp' is a field in your User schema
+    if (String(user.otp).trim() !== String(otp).trim()) {
       return res.status(400).json({ message: "Invalid OTP." });
     }
 
     // 4. Optionally, check for OTP expiration
-    // You would need to store the OTP expiration time in your schema
-    // if (user.otpExpiresAt < Date.now()) {
-    //     return res.status(400).json({ message: "OTP has expired." });
-    // }
+    if (user.otpExpiresAt && user.otpExpiresAt < Date.now()) {
+      user.otp = null;
+      user.otpExpiresAt = null;
+      await user.save();
+      return res.status(400).json({ message: "OTP has expired." });
+    }
 
     // 5. If the OTP is correct, update the user's status
     user.isVerified = true;
-    user.otp = null; // Clear the OTP to prevent reuse
+    user.otp = null;
+    user.otpExpiresAt = null;
     await user.save();
 
     // Token generation is here
     const payload = {
       id: user.id,
       role: user.role,
-      isVerified: user.isVerified
+      isVerified: user.isVerified,
     };
     const token = generateToken(payload);
 
     res.status(200).json({
       message: "OTP verified successfully. Your account is now active!",
+      token,
     });
   } catch (error) {
     console.error("OTP verification error:", error);
